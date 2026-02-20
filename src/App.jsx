@@ -1,6 +1,7 @@
 import { Loader } from './Loader';
 import { JobTabs } from './JobTabs';
 import { useState, useEffect } from 'react'
+import { v4 as uuidv4 } from 'uuid';
 
 import JobInfo from './JobInfo';
 
@@ -17,7 +18,13 @@ const App = () => {
     try {
       const resp = await fetch(url);
       const newJobs = await resp.json();
-      setJobs(newJobs);
+
+      const jobsWithId = newJobs.map((job) => ({
+        ...job,
+        id: uuidv4(),
+      }));
+
+      setJobs(jobsWithId);
       setIsLoading(false);
 
     } catch (error) {
